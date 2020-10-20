@@ -72,8 +72,6 @@ function myFunction() {
          
           s1=s1.concat("private List<"+dt+"> "+key+";\n");
      }
-
-
 }
  for (let key in obj) {
      let value = obj[key];
@@ -125,8 +123,6 @@ function myFunction() {
             s1=s1.concat("public  List<"+t+"> get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
             s1=s1.concat("public  void set"+cap+"(List<"+t+">"+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
      }
-     
-
 }
 s1=s1.concat("}");
 
@@ -135,11 +131,6 @@ s1=s1.concat("}");
  {
      document.getElementById("warn").innerHTML='Please Enter Valid JSON Formats';
  }
-
-
-
-
-
 };
 function IsValidJSONstring(str) {
 try {
