@@ -17,8 +17,8 @@ cursor: pointer;
 <textarea id="myTextarea">
 </textarea>
 
-<p id="warning" style="color: red;font-size:25px;"></p>
-<p id="sucess" style="color: green;font-size:25px;"></p>
+<p id="warn" style="color: red;font-size:25px;"></p>
+<p id="success" style="color: green;font-size:25px;"></p>
 
 <button type="button" onclick="myFunction()">CONVERT</button>
 <button type="button" id="down" disabled='true' onclick="downloadjson()">DOWNLOAD POJO</button>
@@ -26,14 +26,14 @@ cursor: pointer;
 <script>
     var s1="import java.util.*;\npublic class Converted {\n\n";
 function myFunction() {
-    document.getElementById("warning").innerHTML='';
-     document.getElementById("sucess").innerHTML='';
+    document.getElementById("warn").innerHTML='';
+     document.getElementById("success").innerHTML='';
 
  var str=document.getElementById("myTextarea").value;
- if(IsValidJSONString(str))
+ if(IsValidJSONstring(str))
  {  document.getElementById("down").disabled = false;
      var obj=JSON.parse(str);
-      document.getElementById("sucess").innerHTML='You can successfully download your corresponding POJO class';
+      document.getElementById("success").innerHTML='You can successfully download your corresponding POJO class';
       
       for (let key in obj) {
      let value = obj[key];
@@ -48,7 +48,7 @@ function myFunction() {
      }
      else if(typeof(value)=='string')
      {
-         s1=s1.concat("private String "+key+";\n");
+         s1=s1.concat("private string "+key+";\n");
      }
      else if(typeof(value)=='boolean')
      {
@@ -63,7 +63,7 @@ function myFunction() {
          }
          else if(typeof(value[0])=='string')
          {
-             dt="String";
+             dt="string";
          }
          else if(typeof(value[0])=='boolean')
          {
@@ -95,8 +95,8 @@ function myFunction() {
      else if(typeof(value)=='string')
      {
             cap=key.charAt(0).toUpperCase()+key.slice(1);
-            s1=s1.concat("public  String get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
-            s1=s1.concat("public  void set"+cap+"(String "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+            s1=s1.concat("public  string get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            s1=s1.concat("public  void set"+cap+"(string "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
      }
      else if(typeof(value)=='boolean')
      {
@@ -114,14 +114,14 @@ function myFunction() {
          }
          else if(typeof(value[0])=='string')
          {
-             t="String";
+             t="string";
          }
          else if(typeof(value[0])=='boolean')
          {
              t="Boolean";
          }
          
-          capkey=key.charAt(0).toUpperCase()+key.slice(1);
+          cap=key.charAt(0).toUpperCase()+key.slice(1);
             s1=s1.concat("public  List<"+t+"> get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
             s1=s1.concat("public  void set"+cap+"(List<"+t+">"+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
      }
@@ -133,7 +133,7 @@ s1=s1.concat("}");
  }
  else
  {
-     document.getElementById("warning").innerHTML='Please Enter Valid JSON Formats';
+     document.getElementById("warn").innerHTML='Please Enter Valid JSON Formats';
  }
 
 
@@ -141,7 +141,7 @@ s1=s1.concat("}");
 
 
 };
-function IsValidJSONString(str) {
+function IsValidJSONstring(str) {
 try {
 JSON. parse(str);
 } catch (e) {
