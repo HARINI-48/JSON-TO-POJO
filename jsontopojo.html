@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<style>
+button
+{
+background-color:MediumSeaGreen; 
+  border: 2px solid black;
+  color: white;
+cursor: pointer;
+}
+</style>
+<body>
+<body style="background-color:powderblue;">
+<br><h1 style="color:blue;text-align:center;font-style:MV Boli";><I>JSON TO POJO</I></h1>
+<BR><br>
+<center><B>ENTER YOUR JSON<B> <center><br>
+<textarea id="myTextarea">
+</textarea>
+
+<p id="warning" style="color: red;font-size:25px;"></p>
+<p id="sucess" style="color: green;font-size:25px;"></p>
+
+<button type="button" onclick="myFunction()">CONVERT</button>
+<button type="button" id="down" disabled='true' onclick="downloadjson()">DOWNLOAD POJO</button>
+
+<script>
+    var s1="import java.util.*;\npublic class Converted {\n\n";
+function myFunction() {
+    document.getElementById("warning").innerHTML='';
+     document.getElementById("sucess").innerHTML='';
+
+ var str=document.getElementById("myTextarea").value;
+ if(IsValidJSONString(str))
+ {  document.getElementById("down").disabled = false;
+     var obj=JSON.parse(str);
+      document.getElementById("sucess").innerHTML='You can successfully download your corresponding POJO class';
+      
+      for (let key in obj) {
+     let value = obj[key];
+     if(typeof(value)=='number')
+     {  if(Number.isInteger(value))
+         {s1=s1.concat("private Integer "+key+";\n");}
+        else
+        {
+        s1=s1.concat("private Double "+key+";\n");
+        }
+
+     }
+     else if(typeof(value)=='string')
+     {
+         s1=s1.concat("private String "+key+";\n");
+     }
+     else if(typeof(value)=='boolean')
+     {
+         s1=s1.concat("private Boolean "+key+";\n");
+     }
+     else if(typeof(value)=='object')
+     { var dt="";
+         if(typeof(value[0])=='number')
+         {
+             dt=Number.isInteger(value[0])?"Integer":"Double";
+
+         }
+         else if(typeof(value[0])=='string')
+         {
+             dt="String";
+         }
+         else if(typeof(value[0])=='boolean')
+         {
+             dt="Boolean";
+         }
+         
+          s1=s1.concat("private List<"+dt+"> "+key+";\n");
+     }
+
+
+}
+ for (let key in obj) {
+     let value = obj[key];
+     var cap="";
+     if(typeof(value)=='number')
+     {  if(Number.isInteger(value))
+        {   cap=key.charAt(0).toUpperCase()+key.slice(1);
+            s1=s1.concat("public  Integer get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            s1=s1.concat("public  Integer set"+cap+"(int "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+        }
+        else
+        {
+            cap=key.charAt(0).toUpperCase()+key.slice(1);
+            s1=s1.concat("public  Double get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            s1=s1.concat("public  void set"+capkey+"(double "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+        }
+
+     }
+     else if(typeof(value)=='string')
+     {
+            cap=key.charAt(0).toUpperCase()+key.slice(1);
+            s1=s1.concat("public  String get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            s1=s1.concat("public  void set"+cap+"(String "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+     }
+     else if(typeof(value)=='boolean')
+     {
+         cap=key.charAt(0).toUpperCase()+key.slice(1);
+            s1=s1.concat("public  Boolean get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            s1=s1.concat("public  void set"+cap+"(boolean "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+     }
+     else if(typeof(value)=='object')
+     { 
+	 var t="";
+         if(typeof(value[0])=='number')
+         {
+             t=Number.isInteger(value[0])?"Integer":"Double";
+
+         }
+         else if(typeof(value[0])=='string')
+         {
+             t="String";
+         }
+         else if(typeof(value[0])=='boolean')
+         {
+             t="Boolean";
+         }
+         
+          capkey=key.charAt(0).toUpperCase()+key.slice(1);
+            s1=s1.concat("public  List<"+t+"> get"+cap+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            s1=s1.concat("public  void set"+cap+"(List<"+t+">"+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+     }
+     
+
+}
+s1=s1.concat("}");
+
+ }
+ else
+ {
+     document.getElementById("warning").innerHTML='Please Enter Valid JSON Formats';
+ }
+
+
+
+
+
+};
+function IsValidJSONString(str) {
+try {
+JSON. parse(str);
+} catch (e) {
+return false;
+}
+return true;
+}
+ function download(filename, text) {
+  var e = document.createElement('a');
+  e.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  e.setAttribute('download', filename);
+
+  e.style.display = 'none';
+  document.body.appendChild(e);
+
+  e.click();
+
+  document.body.removeChild(e);
+}
+function downloadjson()
+{
+    download('main.java',s1);
+}
+</script>
+
+</body>
+</html>
